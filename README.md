@@ -3,34 +3,36 @@ Some text editing enhancements and a bit more...
 
 Before use, check out your KEYMAP.ini , because some of keybindings will overlap yours.
 
+### Some functions
 
-Selection to the Ending of line
-Selection to the Begining of line
-
-Insert New Line After
-Insert New Line Between Something
-Insert New Line Before Current
-
-Tab Next
-Tab Previous
-
-Add '' Single Quotes To Selection
-Add "" Double Quotes To Selection
-Add [] Brackets To Selection
-Add {} Braces To Selection
-Add { } Braces To Selection
-Add () Round Brackets To Selection
-Add `` Apostrophes To Selection
-Add %% Procents To Selection
-
-Open TODO.txt
-Copy Current Full Path
+<ul>
+	<li>Selection to the Ending of line</li>
+	<li>Selection to the Begining of line</li>
+	<li>&nbsp;</li>
+	<li>Insert New Line After</li>
+	<li>Insert New Line Between Something</li>
+	<li>Insert New Line Before Current</li>
+	<li>&nbsp;</li>
+	<li>Tab Next</li>
+	<li>Tab Previous</li>
+	<li>&nbsp;</li>
+	<li>Add '' Single Quotes To Selection</li>
+	<li>Add "" Double Quotes To Selection</li>
+	<li>Add [] Brackets To Selection</li>
+	<li>Add {} Braces To Selection</li>
+	<li>Add { } Braces To Selection</li>
+	<li>Add () Round Brackets To Selection</li>
+	<li>Add `` Apostrophes To Selection</li>
+	<li>Add %% Procents To Selection</li>
+	<li>&nbsp;</li>
+	<li>Open TODO.txt</li>
+	<li>Copy Current Full Path</li>
+</ul>
 
 
 
 
 
 ###Some related repos
-[Color-Scheme-Texter](https://github.com/CoreText/PSPad-Color-Scheme-Texter)
-
+[Color-Scheme-Texter](https://github.com/CoreText/PSPad-Color-Scheme-Texter) <br />
 [Open_CMD_In_Current_Dir](https://github.com/CoreText/PSPad-Open_CMD_In_Current_Dir)
