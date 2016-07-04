@@ -1,8 +1,8 @@
 # PSPad-EditText
 Some text editing enhancements and a bit more...
 
-Place the file in direcotry _PSPad/Script/VBScript/_ .
-Before use, check out your KEYMAP.ini , because some of keybindings will overlap yours.
+Place the file in direcotry _PSPad/Script/VBScript/_ <br />
+Before use, check out your __KeyMap.INI__ , because some of keybindings will overlap yours.
 
 ### Some functions
 
