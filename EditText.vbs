@@ -5,14 +5,16 @@ const module_title  = "Edit"
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
 
-    addMenuItem "Selection to &Right" , module_name , "SelectToRight" , "Ctrl+Alt+Right"
-    addMenuItem "Selection to &Left"  , module_name , "SelectToLeft"  , "Ctrl+Alt+Left"
-    addMenuItem "Select Line &Down"   , module_name , "SelectLineDown"    , "Ctrl+L"
-    addMenuItem "Select Line &Up"     , module_name , "SelectLineUp"  , "Shift+Ctrl+L"
-    addMenuItem "Select Line & Copy"  , module_name , "SelectLine"    , "Ctrl+Alt+L"
+    addMenuItem "Selection to &Right" , module_name , "SelectToRight"  , "Ctrl+Alt+Right"
+    addMenuItem "Selection to &Left"  , module_name , "SelectToLeft"   , "Ctrl+Alt+Left"
+    addMenuItem "Select Line &Down"   , module_name , "SelectLineDown" , "Ctrl+L"
+    addMenuItem "Select Line &Up"     , module_name , "SelectLineUp"   , "Shift+Ctrl+L"
+    addMenuItem "Select Line & Copy"  , module_name , "SelectLine"     , "Ctrl+Alt+L"
+    addMenuItem "Select Scope"        , module_name , "SelectScopeUp"  , "Alt+K"
+    addMenuItem "Select Scope"        , module_name , "SelectScopeDown", "Alt+J"
 
-    addMenuItem "&Join Line"  , module_name , "JoinLine"  , "Alt+J"
-    addMenuItem "&Split Line" , module_name , "SplitLine" , "Alt+K"
+    addMenuItem "&Join Line"  , module_name , "JoinLine"  , "Shift+Ctrl+J"
+    addMenuItem "&Split Line" , module_name , "SplitLine" , "Shift+Ctrl+K"
 
     addMenuItem "New Line &After"          , module_name , "CtrlEnter"                  , "Ctrl+Enter"
     addMenuItem "New Line Between Smth"    , module_name , "InsertLineBetween"          , "Shift+Enter"
@@ -21,29 +23,29 @@ Sub Init
     addMenuItem "Tab &Next"     , module_name , "NextTab" , "Alt+Right"
     addMenuItem "Tab &Previous" , module_name , "PrivTab" , "Alt+Left"
 
-    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelection" , "Ctrl+'"
-    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddSlashesToSelectionn"     , "Shift+Ctrl+'"
+    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelection"      , "Ctrl+'"
+    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddSlashesToSelectionn"          , "Shift+Ctrl+'"
 
-    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelectionList" , "Alt+'"
-    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddDoubleQuotesToSelectionnList"     , "Shift+Alt+'"
+    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelectionList"  , "Alt+'"
+    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddDoubleQuotesToSelectionnList" , "Shift+Alt+'"
 
-    addMenuItem "&3. Add [] Brackets To Selection"        , module_name , "AddBracketsToSelection"     , "Ctrl+["
-    addMenuItem "&4. Add {} Braces To Selection"          , module_name , "AddBracesToSelection"       , "Shift+Ctrl+["
+    addMenuItem "&3. Add [] Brackets To Selection"        , module_name , "AddBracketsToSelection"          , "Ctrl+["
+    addMenuItem "&4. Add {} Braces To Selection"          , module_name , "AddBracesToSelection"            , "Shift+Ctrl+["
 
-    addMenuItem "&5. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection" , "Ctrl+9"
-    addMenuItem "&6. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection" , "Shift+Ctrl+9"
+    addMenuItem "&5. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection"             , "Ctrl+9"
+    addMenuItem "&6. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection"             , "Shift+Ctrl+9"
 
     addMenuItem "&7. Add `` Apostrophes To Selection"     , module_name , "AddApostrophesToSelection" , ""
     addMenuItem "&8. Add %% Procents To Selection"        , module_name , "AddProcentsToSelection"    , ""
-
-    addMenuItem "Open &TODO.txt"          , module_name , "OpenFileBlank", "Shift+Ctrl+Alt+Space"
-    addMenuItem "&Copy Current Full Path" , module_name , "CopyPath", "Alt+C"
 
     addMenuItem "List Selected Items"   , module_name , "ListSelectedItems"   , "Ctrl+0"
     addMenuItem "List Selected Strings" , module_name , "ListSelectedStrings" , "Shift+Ctrl+0"
 
     addMenuItem "List Selected Items"   , module_name , "ListSelectedItemsToArr"    , "Ctrl+]"
     addMenuItem "List Selected Strings" , module_name , "ListSelectedStringsToSmth" , "Shift+Ctrl+]"
+
+    addMenuItem "Open &TODO.txt"          , module_name , "OpenFileBlank" , "Shift+Ctrl+Alt+Space"
+    addMenuItem "&Copy Current Full Path" , module_name , "CopyPath"      , "Alt+C"
 
     addMenuItem "Focus Move" , module_name, "FocusMove" , "Alt+D"
 '     addMenuItem "SelectWord" , module_name, "SelectWord" , "Ctrl+W"
@@ -504,6 +506,74 @@ Sub SelectLine()
         obj.command("ecPageRight")
         obj.command("ecSelLineStart")
         obj.command("ecCopy")
+    End If
+End Sub
+
+Sub SelectScopeDown()
+    Set obj = NewEditor()
+        obj.assignActiveEditor()
+    If obj.selText() <> "" Then
+        obj.command("ecScrollDown")
+        SelectLineDown()
+
+        line = obj.lineText()
+
+
+        If Trim(line) = "" Or Trim(line) = "//"  Or Trim(line) = "*" Then
+            obj.command("ecScrollDown")
+            SelectLineDown()
+            SelectLineDown()
+            SelectLineDown()
+'             obj.command("ecSelLineStart")
+
+            SelectLineDown()
+            obj.command("ecSelLineStart")
+        End If
+
+        If Trim(line) = "}" Then
+            obj.command("ecSelLineStart")
+            runPSPadAction "aSelMatchBracket"
+'             MsgBox "hello"
+'             SelectLineDown()
+'             SelectLineDown()
+        End If
+
+        runPSPadAction "aSelMatchBracket"
+        runPSPadAction "aSelMatchBracket"
+        obj.command("ecSelLineStart")
+        obj.command("ecScrollDown")
+
+'         obj.command("ecSelLeft")
+'         runPSPadAction ""
+    Else
+        SelectLineDown()
+        obj.command("ecSelLineEnd")
+        runPSPadAction "aSelMatchBracket"
+        runPSPadAction "aSelMatchBracket"
+        obj.command("ecSelLineStart")
+    End If
+End Sub
+
+Sub SelectScopeUp()
+    Set obj = NewEditor()
+        obj.assignActiveEditor()
+    If obj.selText() <> "" Then
+        runPSPadAction "aSelMatchBracket"
+        runPSPadAction "aSelMatchBracket"
+'         obj.command("ecLineEnd")
+        obj.command("ecSelLineStart")
+
+
+'         obj.command("ecScrollDown")
+'         obj.command("ecSelLeft")
+'         runPSPadAction ""
+'         SelectLineDown()
+    Else
+        SelectLineDown()
+        obj.command("ecSelLineEnd")
+        runPSPadAction "aSelMatchBracket"
+        runPSPadAction "aSelMatchBracket"
+        obj.command("ecSelLineStart")
     End If
 End Sub
 
