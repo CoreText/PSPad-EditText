@@ -1,17 +1,22 @@
-# PSPad-EditText
-Some text editing enhancements and a bit more...
+# PSPad EditText Plugin
+Some text editing enhancements and a bit more for those who loves lightweight editors
 
-Place the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
+Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
 Before use, check out your _KeyMap.INI_ , because some of keybindings will overlap yours.
 
-### Some functions
+### Some features
 
 <ul>
 	<li>Selection to the Ending of line</li>
 	<li>Selection to the Begining of line</li>
+	<li>Select Line Down / Up</li>
+	<li>Select Scope</li>
+	&nbsp;
+	<li>Join Line</li>
+	<li>Split Line</li>
 	&nbsp;
 	<li>Insert New Line After</li>
-	<li>Insert New Line Between Something</li>
+	<li>Insert New Line Or Selected Between Something</li>
 	<li>Insert New Line Before Current</li>
 	&nbsp;
 	<li>Tab Next</li>
@@ -26,8 +31,15 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	<li>Add `` Apostrophes To Selection</li>
 	<li>Add %% Procents To Selection</li>
 	&nbsp;
+	<li>List Selected Items</li>
+	<li>List Selected Strings</li>
+	&nbsp;
 	<li>Open TODO.txt</li>
 	<li>Copy Current Full Path</li>
+	&nbsp;
+	<li>Open TODO.txt</li>
+	<li>Copy Current Full Path</li>
+	<li>Focus Move</li>
 </ul>
 
 <hr />
