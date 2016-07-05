@@ -17,7 +17,7 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	<li>Split Line</li>
 	&nbsp;
 	<li>Insert New Line After</li>
-	<li>Insert New Line Or Selected Between Something</li>
+	<li>Insert New Line Or Selected Text Between Something</li>
 	<li>Insert New Line Before Current</li>
 	&nbsp;
 	<li>Tab Next</li>
@@ -34,9 +34,6 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	&nbsp;
 	<li>List Selected Items</li>
 	<li>List Selected Strings</li>
-	&nbsp;
-	<li>Open TODO.txt</li>
-	<li>Copy Current Full Path</li>
 	&nbsp;
 	<li>Open TODO.txt</li>
 	<li>Copy Current Full Path</li>
