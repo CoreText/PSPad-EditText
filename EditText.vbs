@@ -7,8 +7,12 @@ Sub Init
 
     addMenuItem "Selection to &Right" , module_name , "SelectToRight" , "Ctrl+Alt+Right"
     addMenuItem "Selection to &Left"  , module_name , "SelectToLeft"  , "Ctrl+Alt+Left"
-    addMenuItem "Select Line &Down"   , module_name , "SelectLine"    , "Ctrl+L"
+    addMenuItem "Select Line &Down"   , module_name , "SelectLineDown"    , "Ctrl+L"
     addMenuItem "Select Line &Up"     , module_name , "SelectLineUp"  , "Shift+Ctrl+L"
+    addMenuItem "Select Line & Copy"  , module_name , "SelectLine"    , "Ctrl+Alt+L"
+
+    addMenuItem "&Join Line"  , module_name , "JoinLine"  , "Alt+J"
+    addMenuItem "&Split Line" , module_name , "SplitLine" , "Alt+K"
 
     addMenuItem "New Line &After"          , module_name , "CtrlEnter"                  , "Ctrl+Enter"
     addMenuItem "New Line Between Smth"    , module_name , "InsertLineBetween"          , "Shift+Enter"
@@ -19,10 +23,14 @@ Sub Init
 
     addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelection" , "Ctrl+'"
     addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddSlashesToSelectionn"     , "Shift+Ctrl+'"
+
+    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelectionList" , "Alt+'"
+    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddDoubleQuotesToSelectionnList"     , "Shift+Alt+'"
+
     addMenuItem "&3. Add [] Brackets To Selection"        , module_name , "AddBracketsToSelection"     , "Ctrl+["
     addMenuItem "&4. Add {} Braces To Selection"          , module_name , "AddBracesToSelection"       , "Shift+Ctrl+["
 
-    addMenuItem "&5. Add ( ) Round Brackets To Selection" , module_name , "AddBracsToSelection" , "Ctrl+9"
+    addMenuItem "&5. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection" , "Ctrl+9"
     addMenuItem "&6. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection" , "Shift+Ctrl+9"
 
     addMenuItem "&7. Add `` Apostrophes To Selection"     , module_name , "AddApostrophesToSelection" , ""
@@ -73,20 +81,22 @@ Sub ListSelectedItems
     s = ""
     selTxt = obj.selText()
     arrLines = Split(selTxt, vbCrLf)
-'     MsgBox TypeName(arrLines)
     If selTxt <> "" Then
         For Each item In arrLines
             If Trim(Item) <> "" Then
                 s = s & Trim(item) & ", "
             End If
         Next
-        s = "( " & Left(s, len(s)-2) & " )"
+        s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "( " & s & " )"
+        obj.selText(s)
     End If
-    obj.selText(s)
     setClipboardText(s)
 End Sub
 
@@ -105,13 +115,16 @@ Sub ListSelectedStrings
                 s = s & "'" & Trim(item) & "', "
             End If
         Next
-        s = "(" & Left(s, len(s)-2) & ")"
+        s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "(" & s & ")"
+        obj.selText(s)
     End If
-    obj.selText(s)
     setClipboardText(s)
 End Sub
 
@@ -131,13 +144,16 @@ Sub ListSelectedItemsToArr
                 s = s & """" & Trim(item) & """, "
             End If
         Next
-        s = "[" & Left(s, len(s)-2) & "]"
+        s = "[ " & Left(s, len(s)-2) & " ]" & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "[" & s & "]"
+        obj.selText(s)
     End If
-    obj.selText(s)
     setClipboardText(s)
 End Sub
 
@@ -156,13 +172,68 @@ Sub ListSelectedStringsToSmth
                 s = s & """" & Trim(item) & """, "
             End If
         Next
-        s = "{" & Left(s, len(s)-2) & "}"
+        s = "{ " & Left(s, len(s)-2) & " }" & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "{" & s & "}"
+        obj.selText(s)
     End If
-    obj.selText(s)
+    setClipboardText(s)
+End Sub
+
+
+Sub AddSingleQuotesToSelectionList
+	Dim item, s
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+    s = ""
+    selTxt = obj.selText()
+    arrLines = Split(selTxt, vbCrLf)
+    If selTxt <> "" Then
+        For Each item In arrLines
+            If Trim(Item) <> "" Then
+                s = s & "'" & Trim(item) & "', "
+            End If
+        Next
+        s = Left(s, len(s)-2)  & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
+    Else
+        runPSPadAction "aFindWord"
+        s = "'" & obj.selText() & "'"
+        obj.selText(s)
+    End If
+    setClipboardText(s)
+End Sub
+
+
+Sub AddDoubleQuotesToSelectionnList
+	Dim item, s
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+    s = ""
+    selTxt = obj.selText()
+    arrLines = Split(selTxt, vbCrLf)
+    If selTxt <> "" Then
+        For Each item In arrLines
+            If Trim(Item) <> "" Then
+                s = s & """" & Trim(item) & """, "
+            End If
+        Next
+        s = Left(s, len(s)-2)  & vbCrLf
+        obj.selText(s)
+        obj.command("ecLeft")
+        SelectLineDown()
+    Else
+        runPSPadAction "aFindWord"
+        s = """" & obj.selText() & """"
+        obj.selText(s)
+    End If
     setClipboardText(s)
 End Sub
 
@@ -223,7 +294,7 @@ Function AddBracketsTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "[" & strOutput & "]"
+       strOutput = "[" & Trim(strOutput) & "]"
     End If
     AddBracketsTo = strOutput
 End Function
@@ -249,7 +320,7 @@ Function AddBracesTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "{" & strOutput & "}"
+       strOutput = "{" & Trim(strOutput) & "}"
     End If
     AddBracesTo = strOutput
 End Function
@@ -275,7 +346,7 @@ Function AddBracsTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "(" & strOutput & ")"
+       strOutput = "(" & Trim(strOutput) & ")"
     End If
     AddBracsTo = strOutput
 End Function
@@ -301,7 +372,7 @@ Function AddApostrophesTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "`" & strOutput & "`"
+       strOutput = "`" & Trim(strOutput) & "`"
     End If
     AddApostrophesTo = strOutput
 End Function
@@ -326,7 +397,7 @@ Function AddProcentsTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "%" & strOutput & "%"
+       strOutput = "%" & Trim(strOutput) & "%"
     End If
     AddProcentsTo = strOutput
 End Function
@@ -395,7 +466,8 @@ Sub SelectToLeft()
     End With
 End Sub
 
-Sub SelectLine()
+
+Sub SelectLineDown()
     Set obj = NewEditor()
     obj.assignActiveEditor()
     If obj.selText() <> "" Then
@@ -419,6 +491,90 @@ Sub SelectLineUp()
         obj.command("ecSelUp")
     End If
 End Sub
+
+Sub SelectLine()
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+    If obj.selText() <> "" Then
+        obj.command("ecNormalSelect")
+        obj.command("ecSelLineStart")
+        obj.command("ecCopy")
+    Else
+        obj.command("ecNormalSelect")
+        obj.command("ecPageRight")
+        obj.command("ecSelLineStart")
+        obj.command("ecCopy")
+    End If
+End Sub
+
+Sub JoinLine()
+    Set obj = NewEditor()
+        obj.assignActiveEditor()
+    If obj.selText() <> "" Then
+        obj.command("ecScrollDown")
+        obj.command("ecSelLeft")
+        runPSPadAction "aJoinLine"
+        SelectLineDown()
+    Else
+        SelectLineDown()
+        obj.command("ecSelLineEnd")
+        runPSPadAction "aJoinLine"
+    End If
+End Sub
+
+Sub SplitLine()
+    Dim s, line, selTxt, curx, cury, leng, count
+    Set obj = NewEditor()
+        obj.assignActiveEditor()
+
+    line   = obj.lineText()
+    selTxt = Trim(obj.selText())
+
+    s = ""
+    If obj.selText() <> "" Then
+        obj.command("ecScrollDown")
+
+        count = Len(selTxt) - Len( Replace( selTxt, " ", "" ) )
+        s = Replace( selTxt, " ", vbCrLf )
+
+        obj.selText(s)
+
+        If line <> "" Then
+            counter = 1
+            While counter <= count
+                counter = counter + 1
+                SelectLineUp()
+            Wend
+            obj.command("ecSelWordLeft")
+            obj.command("ecSelWordLeft")
+        Else
+            obj.command("ecSelWordLeft")
+            counter = 1
+            While counter <= count
+                counter = counter + 1
+                SelectLineUp()
+            Wend
+            obj.command("ecSelWordLeft")
+        End If
+    Else
+        obj.command("ecSelLineEnd")
+        selTxt_New = Trim(obj.selText())
+
+        count = Len(selTxt_New) - Len( Replace( selTxt_New, " ", "" ) )
+        s = Replace( selTxt_New, " ", vbCrLf )
+
+        obj.selText(s)
+
+        counter = 1
+        While counter <= count
+            counter = counter + 1
+            SelectLineUp()
+        Wend
+        obj.command("ecSelWordLeft")
+        obj.command("ecSelWordLeft")
+    End If
+End Sub
+
 
 Sub CtrlEnter()
     With newEditor()
