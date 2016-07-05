@@ -42,5 +42,5 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 
 <hr />
 ###Some related repos
-[Color-Scheme-Texter](https://github.com/CoreText/PSPad-Color-Scheme-Texter) <br />
-[Open_CMD_In_Current_Dir](https://github.com/CoreText/PSPad-Open_CMD_In_Current_Dir)
+[Color Scheme Texter for PSPad](https://github.com/CoreText/PSPad-Color-Scheme-Texter) <br />
+[PSPad Open_CMD_In_Current_Dir Plugin](https://github.com/CoreText/PSPad-Open_CMD_In_Current_Dir)
