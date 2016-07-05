@@ -1,6 +1,7 @@
 # PSPad EditText Plugin
 Some text editing enhancements and a bit more for those who loves lightweight editors
 
+### Installation
 Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
 Before use, check out your _KeyMap.INI_ , because some of keybindings will overlap yours.
 
