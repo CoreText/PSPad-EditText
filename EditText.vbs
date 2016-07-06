@@ -1,54 +1,54 @@
-const module_name   = "Edit"
+const module_name   = "EditText"
 const module_ver    = "1.0"
-const module_title  = "Edit"
+const module_title  = "&Edit"
 
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
 
-    addMenuItem "Selection to &Right" , module_name , "SelectToRight"  , "Ctrl+Alt+Right"
-    addMenuItem "Selection to &Left"  , module_name , "SelectToLeft"   , "Ctrl+Alt+Left"
-    addMenuItem "Select Line &Down"   , module_name , "SelectLineDown" , "Ctrl+L"
-    addMenuItem "Select Line &Up"     , module_name , "SelectLineUp"   , "Shift+Ctrl+L"
-    addMenuItem "Select Line & Copy"  , module_name , "SelectLine"     , "Ctrl+Alt+L"
-    addMenuItem "Select Scope"        , module_name , "SelectScopeUp"  , "Alt+K"
-    addMenuItem "Select Scope"        , module_name , "SelectScopeDown", "Alt+J"
+    addMenuItem "Selection to &Right" , module_title , "SelectToRight"  , "Ctrl+Alt+Right"
+    addMenuItem "Selection to &Left"  , module_title , "SelectToLeft"   , "Ctrl+Alt+Left"
+    addMenuItem "Select Line &Down"   , module_title , "SelectLineDown" , "Ctrl+L"
+    addMenuItem "Select Line &Up"     , module_title , "SelectLineUp"   , "Shift+Ctrl+L"
+    addMenuItem "Select Line & Copy"  , module_title , "SelectLine"     , "Ctrl+Alt+L"
+    addMenuItem "Select Scope"        , module_title , "SelectScopeUp"  , "Alt+K"
+    addMenuItem "Select Scope"        , module_title , "SelectScopeDown", "Alt+J"
 
-    addMenuItem "&Join Line"  , module_name , "JoinLine"  , "Shift+Ctrl+J"
-    addMenuItem "&Split Line" , module_name , "SplitLine" , "Shift+Ctrl+K"
+    addMenuItem "&Join Line"  , module_title , "JoinLine"  , "Shift+Ctrl+J"
+    addMenuItem "&Split Line" , module_title , "SplitLine" , "Shift+Ctrl+K"
 
-    addMenuItem "New Line &After"          , module_name , "CtrlEnter"                  , "Ctrl+Enter"
-    addMenuItem "New Line Between Smth"    , module_name , "InsertLineBetween"          , "Shift+Enter"
-    addMenuItem "New Line &Before Current" , module_name , "InsertNewLineBeforeCurrent" , "Shift+Ctrl+Enter"
+    addMenuItem "New Line &After"          , module_title , "CtrlEnter"                  , "Ctrl+Enter"
+    addMenuItem "New Line Between Smth"    , module_title , "InsertLineBetween"          , "Shift+Enter"
+    addMenuItem "New Line &Before Current" , module_title , "InsertNewLineBeforeCurrent" , "Shift+Ctrl+Enter"
 
-    addMenuItem "Tab &Next"     , module_name , "NextTab" , "Alt+Right"
-    addMenuItem "Tab &Previous" , module_name , "PrivTab" , "Alt+Left"
+    addMenuItem "Tab &Next"     , module_title , "NextTab" , "Alt+Right"
+    addMenuItem "Tab &Previous" , module_title , "PrivTab" , "Alt+Left"
 
-    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelection"      , "Ctrl+'"
-    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddSlashesToSelectionn"          , "Shift+Ctrl+'"
+    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_title , "AddSingleQuotesToSelection"      , "Ctrl+'"
+    addMenuItem "&2. Add """" Double Quotes To Selection" , module_title , "AddSlashesToSelectionn"          , "Shift+Ctrl+'"
 
-    addMenuItem "&1. Add '' Single Quotes To Selection"   , module_name , "AddSingleQuotesToSelectionList"  , "Alt+'"
-    addMenuItem "&2. Add """" Double Quotes To Selection" , module_name , "AddDoubleQuotesToSelectionnList" , "Shift+Alt+'"
+    addMenuItem "&3. Add [] Brackets To Selection"        , module_title , "AddBracketsToSelection"          , "Ctrl+["
+    addMenuItem "&4. Add {} Braces To Selection"          , module_title , "AddBracesToSelection"            , "Shift+Ctrl+["
 
-    addMenuItem "&3. Add [] Brackets To Selection"        , module_name , "AddBracketsToSelection"          , "Ctrl+["
-    addMenuItem "&4. Add {} Braces To Selection"          , module_name , "AddBracesToSelection"            , "Shift+Ctrl+["
+    addMenuItem "&5. Add () Round Brackets To Selection"  , module_title , "AddBracsToSelection"             , "Ctrl+9"
+    addMenuItem "&6. Add () Round Brackets To Selection"  , module_title , "AddBracsToSelection"             , "Shift+Ctrl+9"
 
-    addMenuItem "&5. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection"             , "Ctrl+9"
-    addMenuItem "&6. Add () Round Brackets To Selection"  , module_name , "AddBracsToSelection"             , "Shift+Ctrl+9"
+    addMenuItem "&7. Add `` Apostrophes To Selection"     , module_title , "AddApostrophesToSelection" , ""
+    addMenuItem "&8. Add %% Procents To Selection"        , module_title , "AddProcentsToSelection"    , ""
 
-    addMenuItem "&7. Add `` Apostrophes To Selection"     , module_name , "AddApostrophesToSelection" , ""
-    addMenuItem "&8. Add %% Procents To Selection"        , module_name , "AddProcentsToSelection"    , ""
+    addMenuItem "&9. List With '' Single Quotes To Selection"   , module_title , "AddSingleQuotesToSelectionList"  , "Alt+'"
+    addMenuItem "&0. List With """" Double Quotes To Selection" , module_title , "AddDoubleQuotesToSelectionnList" , "Shift+Alt+'"
 
-    addMenuItem "List Selected Items"   , module_name , "ListSelectedItems"   , "Ctrl+0"
-    addMenuItem "List Selected Strings" , module_name , "ListSelectedStrings" , "Shift+Ctrl+0"
+    addMenuItem "List Selected Items"   , module_title , "ListSelectedItems"   , "Ctrl+0"
+    addMenuItem "List Selected Strings" , module_title , "ListSelectedStrings" , "Shift+Ctrl+0"
 
-    addMenuItem "List Selected Items"   , module_name , "ListSelectedItemsToArr"    , "Ctrl+]"
-    addMenuItem "List Selected Strings" , module_name , "ListSelectedStringsToSmth" , "Shift+Ctrl+]"
+    addMenuItem "List Selected Items"   , module_title , "ListSelectedItemsToArr"    , "Ctrl+]"
+    addMenuItem "List Selected Strings" , module_title , "ListSelectedStringsToSmth" , "Shift+Ctrl+]"
 
-    addMenuItem "Open &TODO.txt"          , module_name , "OpenFileBlank" , "Shift+Ctrl+Alt+Space"
-    addMenuItem "&Copy Current Full Path" , module_name , "CopyPath"      , "Alt+C"
+    addMenuItem "Open &TODO.txt"          , module_title , "OpenFileBlank" , "Shift+Ctrl+Alt+Space"
+    addMenuItem "&Copy Current Full Path" , module_title , "CopyPath"      , "Alt+C"
 
-    addMenuItem "Focus Move" , module_name, "FocusMove" , "Alt+D"
-'     addMenuItem "SelectWord" , module_name, "SelectWord" , "Ctrl+W"
+    addMenuItem "Focus Move" , module_title, "FocusMove" , "Alt+D"
+'     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
 
 ' under construction
@@ -470,9 +470,12 @@ End Sub
 
 
 Sub SelectLineDown()
+    Dim blockY, caretY
     Set obj = NewEditor()
     obj.assignActiveEditor()
+
     If obj.selText() <> "" Then
+        obj.command("ecSelPageLeft")
         obj.command("ecSelDown")
     Else
         obj.command("ecNormalSelect")
@@ -664,8 +667,8 @@ Sub InsertNewLineBeforeCurrent()
         obj.command("ecPageLeft")
         obj.command("ecUp")
         obj.command("ecPageRight")
+        obj.command("ecPageRight")
         obj.command("ecLineBreak")
-
     End If
 End Sub
 
