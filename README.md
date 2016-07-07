@@ -1,5 +1,5 @@
 # PSPad EditText Plugin
-Some text editing enhancements and a bit more for those who loves lightweight editors
+Some text editing enhancements and a bit more.
 
 ### Installation
 Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
@@ -34,6 +34,16 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	&nbsp;
 	<li>List Selected Items</li>
 	<li>List Selected Strings</li>
+	<li></li>
+	&nbsp;
+	<li>Goto Matching Tag</li>
+	<li>Selected HTML Block To String For JavaScript</li>
+	<li>Add Slashes To Selection</li>
+	&nbsp;
+	<li>Unindent</li>
+	<li>Block Indent</li>
+	<li>Block Unindnt</li>
+	<li>Smart Paste</li>
 	&nbsp;
 	<li>Open TODO.txt</li>
 	<li>Copy Current Full Path</li>
