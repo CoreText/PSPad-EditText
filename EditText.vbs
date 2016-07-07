@@ -10,8 +10,8 @@ Sub Init
     addMenuItem "Select Line &Down"   , module_title , "SelectLineDown" , "Ctrl+L"
     addMenuItem "Select Line &Up"     , module_title , "SelectLineUp"   , "Shift+Ctrl+L"
     addMenuItem "Select Line & Copy"  , module_title , "SelectLine"     , "Ctrl+Alt+L"
-    addMenuItem "Select Scope"        , module_title , "SelectScopeUp"  , "Alt+K"
-    addMenuItem "Select Scope"        , module_title , "SelectScopeDown", "Alt+J"
+    addMenuItem "Select Scope"        , module_title , "SelectScopeUp"  , "Shift+Ctrl+Alt+Up"
+    addMenuItem "Select Scope"        , module_title , "SelectScopeDown", "Shift+Ctrl+Alt+Down"
 
     addMenuItem "&Join Line"  , module_title , "JoinLine"  , "Shift+Ctrl+J"
     addMenuItem "&Split Line" , module_title , "SplitLine" , "Shift+Ctrl+K"
@@ -48,8 +48,79 @@ Sub Init
     addMenuItem "&Copy Current Full Path" , module_title , "CopyPath"      , "Alt+C"
 
     addMenuItem "Focus Move" , module_title, "FocusMove" , "Alt+D"
+
+    addMenuItem "Shift Tab"                 , module_title, "ShiftTab"           , "Shift+Tab"
+    addMenuItem "Tab Whith Selection"       , module_title, "TabSelBlockIn"      , "Shift+Ctrl+Alt+Right"
+    addMenuItem "Shift Tab Whith Selection" , module_title, "ShiftTabSelBlockUn" , "Shift+Ctrl+Alt+Left"
+
+    addMenuItem "Goto Matching Tag"         , module_title, "GotoTag"            , "Ctrl+W"
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
+
+
+Function GetTagAtCursor()
+
+  Dim strLine, strChar, strReturn
+  Dim i, intPosX, intStartPos, intEndPos
+  Dim objEditor
+
+  Set objEditor = newEditor()
+  With objEditor
+    .assignActiveEditor()
+    strLine = .lineText()
+    intPosX = .caretX()
+  End With
+  intStartPos = 1
+  intEndPos = Len(strLine)
+  For i = intPosX To Len(strLine) Step 1
+    strChar = (Mid(strLine, i, 1))
+    If (strChar = ">" AND strLastChar <> "%") or strChar = " " or strChar = "}" or strChar = """" or strChar = "'" Then
+      if strLastChar = "}" then
+        intEndPos = i - 2
+      elseif strChar = "}" or strChar = " " or strChar = """" or strChar = "'" then
+        intEndPos = i - 1
+      else
+        intEndPos = i
+      End If
+      Exit For
+    End If
+    strLastChar = strChar
+  Next
+  For i = intEndPos To 1 Step -1
+    strChar = (Mid(strLine, i, 1))
+    If (strChar = "<" AND strLastChar <> "%") or strChar = " " or strChar = "{" or strChar = """" or strChar = "'" Then
+      if strLastChar = "{" then
+        intStartPos = i + 2
+      elseif strChar = "{" or strChar = " " or strChar = """" or strChar = "'" then
+        intStartPos = i + 1
+      else
+        intStartPos = i
+      End If
+      Exit For
+    End If
+    strLastChar = strChar
+  Next
+  GetTagAtCursor = Mid(strLine, intStartPos, intEndPos - intStartPos + 1)
+End Function
+
+Sub GotoTag
+    Dim currentTag, selTxt, counter
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+
+    runPSPadAction "aHTMLSelTag"
+
+    If obj.blockEndX() = obj.caretX Then
+        obj.command("ecRight")
+        obj.command("ecLeft")
+    ElseIf obj.blockBeginX() = obj.caretX Then
+        obj.command("ecLeft")
+        obj.command("ecRight")
+    End If
+
+End Sub
+
+
 
 ' under construction
 Sub SelectWord
@@ -75,6 +146,55 @@ Sub SelectWord
 
 End Sub
 
+
+Sub ShiftTab
+    Set obj = newEditor()
+    obj.assignActiveEditor()
+
+    If obj.selText() = "" Then
+        obj.command("ecPageRight")
+        obj.command("ecSelLineStart")
+        obj.command("ecBlockUnindent")
+        runPSPadAction "ecNormalSelect"
+        obj.command("ecPageLeft")
+        obj.command("ecLineStart")
+    Else
+        obj.command("ecBlockUnindent")
+    End If
+End Sub
+
+Sub TabSelBlockIn
+    Set obj = newEditor()
+    obj.assignActiveEditor()
+
+    If obj.selText() = "" Then
+        obj.command("ecPageRight")
+        obj.command("ecSelLineStart")
+        obj.command("ecBlockIndent")
+        runPSPadAction "ecNormalSelect"
+        obj.command("ecLeft")
+    Else
+        obj.command("ecBlockIndent")
+    End If
+End Sub
+
+Sub ShiftTabSelBlockUn
+    Set obj = newEditor()
+    obj.assignActiveEditor()
+
+    If obj.selText() = "" Then
+        obj.command("ecPageRight")
+        obj.command("ecSelLineStart")
+        obj.command("ecBlockUnindent")
+        runPSPadAction "ecNormalSelect"
+        obj.command("ecPageLeft")
+        obj.command("ecLineStart")
+    Else
+        obj.command("ecBlockUnindent")
+    End If
+End Sub
+
+
 ' List of items
 Sub ListSelectedItems
     Dim item, selTxt, objSelTxt, s
@@ -92,7 +212,8 @@ Sub ListSelectedItems
         s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
@@ -120,7 +241,8 @@ Sub ListSelectedStrings
         s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
@@ -149,7 +271,8 @@ Sub ListSelectedItemsToArr
         s = "[ " & Left(s, len(s)-2) & " ]" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
@@ -177,7 +300,8 @@ Sub ListSelectedStringsToSmth
         s = "{ " & Left(s, len(s)-2) & " }" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
@@ -204,7 +328,8 @@ Sub AddSingleQuotesToSelectionList
         s = Left(s, len(s)-2)  & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = "'" & obj.selText() & "'"
@@ -230,7 +355,8 @@ Sub AddDoubleQuotesToSelectionnList
         s = Left(s, len(s)-2)  & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-        SelectLineDown()
+'         SelectLineDown()
+'         obj.command("ecSelLeft")
     Else
         runPSPadAction "aFindWord"
         s = """" & obj.selText() & """"
@@ -348,7 +474,7 @@ Function AddBracsTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "(" & Trim(strOutput) & ")"
+       strOutput = "( " & Trim(strOutput) & " )"
     End If
     AddBracsTo = strOutput
 End Function
@@ -521,7 +647,6 @@ Sub SelectScopeDown()
 
         line = obj.lineText()
 
-
         If Trim(line) = "" Or Trim(line) = "//"  Or Trim(line) = "*" Then
             obj.command("ecScrollDown")
             SelectLineDown()
@@ -675,7 +800,7 @@ End Sub
 Sub InsertLineBetween()
     Set obj = newEditor()
         obj.assignActiveEditor()
-   
+
     If obj.selText() <> "" Then
         obj.command("ecCut")
         obj.command("ecLineBreak")
