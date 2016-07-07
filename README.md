@@ -14,7 +14,7 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	<li>Select Scope</li>
 	&nbsp;
 	<li>Join Line</li>
-	<li>Split Line Under Cursor</li>
+	<li>Split Line From Position Of Cursor</li>
 	&nbsp;
 	<li>Insert New Line After</li>
 	<li>Insert New Line Or Selected Text Between Something</li>
