@@ -5,6 +5,7 @@ const module_title  = "&Edit"
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
 
+'     addMenuItem "Write to Log" , module_title , "write2Log"  , "Shift+Ctrl+I"
     addMenuItem "Smart Paste" , module_title , "SmartPaste"  , "Ctrl+V"
 
     addMenuItem "Selection to &Right" , module_title , "SelectToRight"  , "Ctrl+Alt+Right"
@@ -47,6 +48,7 @@ Sub Init
     addMenuItem "List Selected Strings" , module_title , "ListSelectedStringsToSmth" , "Shift+Ctrl+]"
 
     addMenuItem "Open &TODO.txt"          , module_title , "OpenFileBlank" , "Shift+Ctrl+Alt+Space"
+    addMenuItem "Open Current &Folder"    , module_title , "OpenFolder"    , "Alt+O"
     addMenuItem "&Copy Current Full Path" , module_title , "CopyPath"      , "Alt+C"
 
     addMenuItem "Focus Move" , module_title, "FocusMove" , "Alt+D"
@@ -59,6 +61,41 @@ Sub Init
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
 
+
+Function GetFileName()
+   On Error Resume Next
+   Set editor = newEditor()
+   editor.assignActiveEditor
+   GetFileName = editor.fileName
+End Function
+
+Sub openFolder
+   Set FS     = CreateObject("Scripting.FileSystemObject")
+   Set Shell = CreateObject("Shell.Application")
+   Set File   = FS.GetFile(GetFileName())
+   folderName = File.ParentFolder
+   Shell.Explore folderName
+End Sub
+
+' under custruction
+Sub write2Log()
+    Dim selTxt, msgToCmd
+    Set obj = NewEditor()
+        obj.assignActiveEditor()
+        obj.AssignLog()
+        msgToCmd = Trim(obj.selText())
+
+      cmdArgs = msgToCmd
+      Set wshShell = CreateObject( "WScript.Shell" )
+      wshShell.Run "cmd " & cmdArgs , False
+
+        logAddLine(wshShell.Echo)
+
+    Set wshShell = Nothing
+    Set obj = Nothing
+End Sub
+
+
 Sub SmartPaste
     Dim sel, clipboard
     Set obj = newEditor()
@@ -70,9 +107,11 @@ Sub SmartPaste
     Else
         clipboard = Trim(getClipboardText())
         obj.selText(clipboard)
-
     End If
+
+    Set obj = Nothing
 End Sub
+
 
 Function GetTagAtCursor()
 
@@ -134,6 +173,7 @@ Sub GotoTag
         obj.command("ecRight")
     End If
 
+    Set obj = Nothing
 End Sub
 
 
@@ -177,6 +217,8 @@ Sub ShiftTab
     Else
         obj.command("ecBlockUnindent")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub TabSelBlockIn
@@ -192,6 +234,8 @@ Sub TabSelBlockIn
     Else
         obj.command("ecBlockIndent")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub ShiftTabSelBlockUn
@@ -208,6 +252,8 @@ Sub ShiftTabSelBlockUn
     Else
         obj.command("ecBlockUnindent")
     End If
+
+    Set obj = Nothing
 End Sub
 
 
@@ -237,6 +283,8 @@ Sub ListSelectedItems
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -266,6 +314,8 @@ Sub ListSelectedStrings
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -296,6 +346,8 @@ Sub ListSelectedItemsToArr
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -325,6 +377,8 @@ Sub ListSelectedStringsToSmth
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -352,6 +406,8 @@ Sub AddSingleQuotesToSelectionList
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -379,6 +435,8 @@ Sub AddDoubleQuotesToSelectionnList
         obj.selText(s)
     End If
     setClipboardText(s)
+
+    Set obj = Nothing
 End Sub
 
 
@@ -624,6 +682,8 @@ Sub SelectLineDown()
         obj.command("ecPageLeft")
         obj.command("ecSelDown")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub SelectLineUp()
@@ -637,6 +697,8 @@ Sub SelectLineUp()
         obj.command("ecRight")
         obj.command("ecSelUp")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub SelectLine()
@@ -652,6 +714,8 @@ Sub SelectLine()
         obj.command("ecSelLineStart")
         obj.command("ecCopy")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub SelectScopeDown()
@@ -696,6 +760,8 @@ Sub SelectScopeDown()
         runPSPadAction "aSelMatchBracket"
         obj.command("ecSelLineStart")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub SelectScopeUp()
@@ -719,6 +785,8 @@ Sub SelectScopeUp()
         runPSPadAction "aSelMatchBracket"
         obj.command("ecSelLineStart")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub JoinLine()
@@ -734,6 +802,8 @@ Sub JoinLine()
         obj.command("ecSelLineEnd")
         runPSPadAction "aJoinLine"
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub SplitLine()
@@ -787,6 +857,8 @@ Sub SplitLine()
         obj.command("ecSelWordLeft")
         obj.command("ecSelWordLeft")
     End If
+
+    Set obj = Nothing
 End Sub
 
 
@@ -832,6 +904,8 @@ Sub InsertLineBetween()
         obj.command("ecLineBreak")
         obj.command("ecTab")
     End If
+
+    Set obj = Nothing
 End Sub
 
 Sub FocusMove
