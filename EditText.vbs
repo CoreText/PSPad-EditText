@@ -40,7 +40,9 @@ Sub Init
 
     addMenuItem "&9. List With '' Single Quotes To Selection"   , module_title , "AddSingleQuotesToSelectionList"  , "Alt+'"
     addMenuItem "&0. List With """" Double Quotes To Selection" , module_title , "AddDoubleQuotesToSelectionnList" , "Shift+Alt+'"
+
     addMenuItem "Selected HTML Block To String For JavaScript"  , module_title , "SelectedHTMLBlockToStringForJavaScript" , "Shift+Ctrl+Alt+'"
+    addMenuItem "Add Slashes To Selection"                      , module_title , "AddSlashesToSelection"                  , "Ctrl+Alt+'"
 
     addMenuItem "List Selected Items"   , module_title , "ListSelectedItems"   , "Ctrl+0"
     addMenuItem "List Selected Strings" , module_title , "ListSelectedStrings" , "Shift+Ctrl+0"
@@ -441,7 +443,58 @@ Sub AddDoubleQuotesToSelectionnList
 End Sub
 
 
-Function HTMLBlockToString(ByVal strInput)
+Function AddSlashes(strInput)
+ Dim strOutput, blnBinary, numCount, strChr
+ strOutput = ""
+ blnBinary = False
+ For numCount = 1 To Len(strInput)
+    strChr = Mid(strInput, numCount, 1)
+    Select Case strChr
+          Case chr(13): strChr = "\n"
+          Case chr(10): strChr = "\r"
+          Case chr(9) : strChr = "\t"
+          Case chr(8) : strChr = "\b"
+          Case "'"    : strChr = "''" ' ANSI Syntax
+          Case "\"    : strChr = "\\"
+          Case chr(0) : strChr = "\0"
+          Case chr(26): strChr = "\Z"
+          Case Else:
+              If Asc(strChr)<32 Or Asc(strChr)>126 Then
+                blnBinary = True
+              End If
+    End Select
+    strOutput = strOutput & strChr
+ Next
+    If blnBinary Then
+      strOutput = ToHex(strInput)
+    Else
+      strOutput = strOutput
+    End If
+ AddSlashes = strOutput
+End Function
+
+Sub AddSlashesToSelection()
+    Dim s
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+
+    If obj.selText() <> "" Then
+        MsgBox "Yeah"
+
+        s = AddSlashes(obj.selText())
+        obj.selText(s)
+    Else
+        obj.command("ecPageLeft")
+        obj.command("ecSelLineEnd")
+        AddSlashes(obj.selText())
+        s = AddSlashes(obj.selText())
+        obj.selText(s)
+    End If
+    Set obj = Nothing
+End Sub
+
+
+Function AddSlashesToDoubleQuotes(ByVal strInput)
     Dim strOutput, blnBinary, numCount, strChr
     strOutput = ""
     blnBinary = False
@@ -468,11 +521,11 @@ Function HTMLBlockToString(ByVal strInput)
     Else
        strOutput = strOutput
     End If
-    HTMLBlockToString = strOutput
+    AddSlashesToDoubleQuotes = strOutput
 End Function
 
 Sub SelectedHTMLBlockToStringForJavaScript()
-	Dim item, s
+	Dim item, s, selTxt, arrLines
     Set obj = NewEditor()
     obj.assignActiveEditor()
     s = ""
@@ -481,7 +534,7 @@ Sub SelectedHTMLBlockToStringForJavaScript()
     If selTxt <> "" Then
         For Each item In arrLines
             If Trim(Item) <> "" Then
-                s = s & """" & Trim(HTMLBlockToString(item)) & "\n"" + " & vbCrLf
+                s = s & """" & Trim(AddSlashesToDoubleQuotes(item)) & "\n"" + " & vbCrLf
             End If
         Next
         s = Left(s, len(s)-2)  & vbCrLf
@@ -492,7 +545,7 @@ Sub SelectedHTMLBlockToStringForJavaScript()
         obj.command("ecDeleteLastChar")
     Else
         runPSPadAction "aFindWord"
-        s = """" & HTMLBlockToString(obj.selText()) & """"
+        s = """" & AddSlashesToDoubleQuotes(obj.selText()) & """"
         obj.selText(s)
     End If
     setClipboardText(s)
@@ -542,6 +595,7 @@ Sub AddSingleQuotesToSelection()
         .assignActiveEditor()
         strInput = AddSingleQuotesTo(.selText())
         .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
@@ -568,6 +622,7 @@ Sub AddBracketsToSelection()
         .assignActiveEditor()
         strInput = AddBracketsTo(.selText())
         .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
@@ -594,6 +649,7 @@ Sub AddBracesToSelection()
         .assignActiveEditor()
         strInput = AddBracesTo(.selText())
         .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
@@ -609,7 +665,7 @@ Function AddBracsTo(ByVal strInput)
     If blnBinary Then
        strOutput = ToHex(strInput)
     Else
-       strOutput = "( " & Trim(strOutput) & " )"
+       strOutput = "(" & Trim(strOutput) & ")"
     End If
     AddBracsTo = strOutput
 End Function
@@ -620,6 +676,7 @@ Sub AddBracsToSelection()
          .assignActiveEditor()
          strInput = AddBracsTo(.selText())
          .selText(strInput)
+         .command("ecLeft")
     End With
 End Sub
 
@@ -646,6 +703,7 @@ Sub AddApostrophesToSelection()
          .assignActiveEditor()
          strInput = AddApostrophesTo(.selText())
          .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
@@ -671,6 +729,7 @@ Sub AddProcentsToSelection()
          .assignActiveEditor()
          strInput = AddProcentsTo(.selText())
          .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
@@ -697,6 +756,7 @@ Sub AddSlashesToSelectionn()
         .assignActiveEditor()
         strInput = AddSlashesToo(.selText())
         .selText(strInput)
+        .command("ecLeft")
     End With
 End Sub
 
