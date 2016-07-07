@@ -56,11 +56,11 @@ Sub Init
 
     addMenuItem "Focus Move" , module_title, "FocusMove" , "Alt+D"
 
-    addMenuItem "Shift Tab"                 , module_title, "ShiftTab"           , "Shift+Tab"
-    addMenuItem "Tab Whith Selection"       , module_title, "TabSelBlockIn"      , "Shift+Ctrl+Alt+Right"
-    addMenuItem "Shift Tab Whith Selection" , module_title, "ShiftTabSelBlockUn" , "Shift+Ctrl+Alt+Left"
+    addMenuItem "Shift Tab"      , module_title, "ShiftTab"           , "Shift+Tab"
+    addMenuItem "Block Indent"   , module_title, "TabSelBlockIn"      , "Shift+Ctrl+Alt+Right"
+    addMenuItem "Block Unindent" , module_title, "ShiftTabSelBlockUn" , "Shift+Ctrl+Alt+Left"
 
-    addMenuItem "Goto Matching Tag"         , module_title, "GotoTag"            , "Ctrl+W"
+    addMenuItem "Goto Matching Tag"         , module_title, "GotoTag" , "Ctrl+W"
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
 
@@ -277,15 +277,15 @@ Sub ListSelectedItems
         s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "( " & s & " )"
         obj.selText(s)
+        obj.command("ecLeft")
+        obj.command("ecLeft")
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -308,15 +308,14 @@ Sub ListSelectedStrings
         s = "( " & Left(s, len(s)-2) & " )" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "(" & s & ")"
         obj.selText(s)
+        obj.command("ecLeft")
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -340,15 +339,15 @@ Sub ListSelectedItemsToArr
         s = "[ " & Left(s, len(s)-2) & " ]" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
-        s = "[" & s & "]"
+        s = "[" &  s & "]"
         obj.selText(s)
+        obj.command("ecLeft")
+        InsertLineBetween()
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -371,15 +370,15 @@ Sub ListSelectedStringsToSmth
         s = "{ " & Left(s, len(s)-2) & " }" & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = obj.selText()
         s = "{" & s & "}"
         obj.selText(s)
+        obj.command("ecLeft")
+        InsertLineBetween()
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -401,14 +400,12 @@ Sub AddSingleQuotesToSelectionList
         s = Left(s, len(s)-2)  & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = "'" & obj.selText() & "'"
         obj.selText(s)
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -430,14 +427,12 @@ Sub AddDoubleQuotesToSelectionnList
         s = Left(s, len(s)-2)  & vbCrLf
         obj.selText(s)
         obj.command("ecLeft")
-'         SelectLineDown()
-'         obj.command("ecSelLeft")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = """" & obj.selText() & """"
         obj.selText(s)
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
@@ -543,12 +538,12 @@ Sub SelectedHTMLBlockToStringForJavaScript()
         obj.command("ecLeft")
         obj.command("ecDeleteLastChar")
         obj.command("ecDeleteLastChar")
+        setClipboardText(s)
     Else
         runPSPadAction "aFindWord"
         s = """" & AddSlashesToDoubleQuotes(obj.selText()) & """"
         obj.selText(s)
     End If
-    setClipboardText(s)
 
     Set obj = Nothing
 End Sub
