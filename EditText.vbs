@@ -40,6 +40,7 @@ Sub Init
 
     addMenuItem "&9. List With '' Single Quotes To Selection"   , module_title , "AddSingleQuotesToSelectionList"  , "Alt+'"
     addMenuItem "&0. List With """" Double Quotes To Selection" , module_title , "AddDoubleQuotesToSelectionnList" , "Shift+Alt+'"
+    addMenuItem "Selected HTML Block To String For JavaScript"  , module_title , "SelectedHTMLBlockToStringForJavaScript" , "Shift+Ctrl+Alt+'"
 
     addMenuItem "List Selected Items"   , module_title , "ListSelectedItems"   , "Ctrl+0"
     addMenuItem "List Selected Strings" , module_title , "ListSelectedStrings" , "Shift+Ctrl+0"
@@ -432,6 +433,66 @@ Sub AddDoubleQuotesToSelectionnList
     Else
         runPSPadAction "aFindWord"
         s = """" & obj.selText() & """"
+        obj.selText(s)
+    End If
+    setClipboardText(s)
+
+    Set obj = Nothing
+End Sub
+
+
+Function HTMLBlockToString(ByVal strInput)
+    Dim strOutput, blnBinary, numCount, strChr
+    strOutput = ""
+    blnBinary = False
+    For numCount = 1 To Len(strInput)
+        strChr = Mid(strInput, numCount, 1)
+        Select Case strChr
+              Case chr(13): strChr = "\n"
+              Case chr(10): strChr = "\r"
+              Case chr(9) : strChr = "\t"
+              Case chr(8) : strChr = "\b"
+              Case "'"    : strChr = "''" ' ANSI Syntax
+              Case """"   : strChr = "\"""
+              Case chr(0) : strChr = "\0"
+              Case chr(26): strChr = "\Z"
+              Case Else:
+                  If Asc(strChr)<32 Or Asc(strChr)>126 Then
+                    blnBinary = True
+                  End If
+        End Select
+        strOutput = strOutput & strChr
+    Next
+    If blnBinary Then
+       strOutput = ToHex(strInput)
+    Else
+       strOutput = strOutput
+    End If
+    HTMLBlockToString = strOutput
+End Function
+
+Sub SelectedHTMLBlockToStringForJavaScript()
+	Dim item, s
+    Set obj = NewEditor()
+    obj.assignActiveEditor()
+    s = ""
+    selTxt = obj.selText()
+    arrLines = Split(selTxt, vbCrLf)
+    If selTxt <> "" Then
+        For Each item In arrLines
+            If Trim(Item) <> "" Then
+                s = s & """" & Trim(HTMLBlockToString(item)) & "\n"" + " & vbCrLf
+            End If
+        Next
+        s = Left(s, len(s)-2)  & vbCrLf
+
+        obj.selText(s)
+        obj.command("ecLeft")
+        obj.command("ecDeleteLastChar")
+        obj.command("ecDeleteLastChar")
+    Else
+        runPSPadAction "aFindWord"
+        s = """" & HTMLBlockToString(obj.selText()) & """"
         obj.selText(s)
     End If
     setClipboardText(s)
