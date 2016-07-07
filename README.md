@@ -10,8 +10,8 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 <ul>
 	<li>Selection to the Ending of line</li>
 	<li>Selection to the Begining of line</li>
-	<li>Select Line Down / Up</li>
-	<li>Select Scope</li>
+	<li>Select Line Up / Down</li>
+	<li>Select Function Scope Up / Down</li>
 	&nbsp;
 	<li>Join Line</li>
 	<li>Split Line From Position Of Cursor</li>
