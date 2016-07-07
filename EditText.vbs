@@ -5,6 +5,8 @@ const module_title  = "&Edit"
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
 
+    addMenuItem "Smart Paste" , module_title , "SmartPaste"  , "Ctrl+V"
+
     addMenuItem "Selection to &Right" , module_title , "SelectToRight"  , "Ctrl+Alt+Right"
     addMenuItem "Selection to &Left"  , module_title , "SelectToLeft"   , "Ctrl+Alt+Left"
     addMenuItem "Select Line &Down"   , module_title , "SelectLineDown" , "Ctrl+L"
@@ -57,6 +59,20 @@ Sub Init
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
 
+Sub SmartPaste
+    Dim sel, clipboard
+    Set obj = newEditor()
+    obj.assignActiveEditor()
+    sel = obj.selText()
+
+    If obj.caretX() = 1 Then
+        obj.command("ecPaste")
+    Else
+        clipboard = Trim(getClipboardText())
+        obj.selText(clipboard)
+
+    End If
+End Sub
 
 Function GetTagAtCursor()
 
