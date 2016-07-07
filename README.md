@@ -14,7 +14,7 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	<li>Select Scope</li>
 	&nbsp;
 	<li>Join Line</li>
-	<li>Split Line</li>
+	<li>Split Line Under Cursor</li>
 	&nbsp;
 	<li>Insert New Line After</li>
 	<li>Insert New Line Or Selected Text Between Something</li>
@@ -34,7 +34,6 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	&nbsp;
 	<li>List Selected Items</li>
 	<li>List Selected Strings</li>
-	<li></li>
 	&nbsp;
 	<li>Goto Matching Tag</li>
 	<li>Selected HTML Block To String For JavaScript</li>
