@@ -4,8 +4,6 @@ const module_title  = "&Edit"
 
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
-
-'     addMenuItem "Write to Log" , module_title , "write2Log"  , "Shift+Ctrl+I"
     addMenuItem "Smart Paste" , module_title , "SmartPaste"  , "Ctrl+V"
 
     addMenuItem "Selection to &Right" , module_title , "SelectToRight"  , "Ctrl+Alt+Right"
@@ -43,6 +41,8 @@ Sub Init
 
     addMenuItem "Selected HTML Block To String For JavaScript"  , module_title , "SelectedHTMLBlockToStringForJavaScript" , "Shift+Ctrl+Alt+'"
     addMenuItem "Add Slashes To Selection"                      , module_title , "AddSlashesToSelection"                  , "Ctrl+Alt+'"
+    addMenuItem "console.log()"                                 , module_title , "consoleLog"                             , "Shift+Ctrl+Alt+J"
+    addMenuItem "Pretty print_r()"                              , module_title , "prettyPrinter"                          , "Shift+Ctrl+I"
 
     addMenuItem "List Selected Items"   , module_title , "ListSelectedItems"   , "Ctrl+0"
     addMenuItem "List Selected Strings" , module_title , "ListSelectedStrings" , "Shift+Ctrl+0"
@@ -64,6 +64,83 @@ Sub Init
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
 End Sub
 
+
+Sub consoleLog()
+    Dim selTxt, new_selTxt, s
+    Set obj = newEditor()
+        obj.assignActiveEditor()
+        selTxt = obj.selText()
+
+    If selTxt <> "" Then
+        CtrlEnter()
+        s = "console.log( """ & Trim(selTxt) & ": "", " & Trim(selTxt) & " );" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecLeft")
+        runPSPadAction("aSelMatchBracket")
+
+    ElseIf GetTagAtCursor() <> "" Then
+        runPSPadAction("aFindWord")
+        new_selTxt = obj.selText()
+        CtrlEnter()
+        s = "console.log( """ & Trim(new_selTxt) & ": "", " & Trim(new_selTxt) & " );" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecLeft")
+        runPSPadAction("aSelMatchBracket")
+
+    Else
+        s = "console.log(  );" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecLeft")
+        runPSPadAction("aSelMatchBracket")
+
+    End If
+    Set obj = Nothing
+End Sub
+
+Sub prettyPrinter()
+    Dim selTxt, new_selTxt, s
+    Set obj = newEditor()
+        obj.assignActiveEditor()
+        selTxt = obj.selText()
+    If selTxt <> "" Then
+        CtrlEnter()
+        s = vbCrLf & "print  ('<pre style=""color: lawngreen ;background-color: black ;padding:12px;overflow:auto;font:.8em Consolas;"">');" & vbCrLf & "print_r( " & Trim(selTxt) & " );" & vbCrLf & "print  (""\r\n</pre>"");" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecRight")
+        runPSPadAction("aSelMatchBracket")
+
+    ElseIf GetTagAtCursor() <> "" Then
+        runPSPadAction("aFindWord")
+        new_selTxt = obj.selText()
+        CtrlEnter()
+        s = vbCrLf & "print  ('<pre style=""color: lawngreen ;background-color: black ;padding:12px;overflow:auto;font:.8em Consolas;"">');" & vbCrLf & "print_r( " & Trim(new_selTxt) & " );" & vbCrLf & "print  (""\r\n</pre>"");" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecRight")
+        runPSPadAction("aSelMatchBracket")
+
+    Else
+        s = vbCrLf & "print  ('<pre style=""color: lawngreen ;background-color: black ;padding:12px;overflow:auto;font:.8em Consolas;"">');" & vbCrLf & "print_r(  );" & vbCrLf & "print  (""\r\n</pre>"");" & vbCrLf
+        obj.selText(s)
+        obj.command("ecUp")
+        obj.command("ecUp")
+        obj.command("ecLineEnd")
+        obj.command("ecRight")
+        runPSPadAction("aSelMatchBracket")
+    End If
+    Set obj = Nothing
+End Sub
 
 Function GetFileName()
    On Error Resume Next
