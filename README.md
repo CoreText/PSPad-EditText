@@ -1,10 +1,6 @@
 # PSPad EditText Plugin
 Some text editing enhancements and a bit more.
 
-### Installation
-Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
-Before use, check out your _KeyMap.INI_ , because some of keybindings will overlap yours.
-
 ### Some features
 
 <ul>
@@ -48,6 +44,11 @@ Before use, check out your _KeyMap.INI_ , because some of keybindings will overl
 	<li>Copy Current Full Path</li>
 	<li>Focus Move</li>
 </ul>
+
+### Installation
+Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
+Before use, check out your _KeyMap.INI_ , because some of keybindings will overlap yours.<br />
+If you don't like some of the features just comment them in _EditText.vbs_ with a single quote.<br />
 
 <hr />
 ###Some related repos
