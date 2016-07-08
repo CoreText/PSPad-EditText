@@ -35,6 +35,9 @@ Some text editing enhancements and a bit more.
 	<li>Selected HTML Block To String For JavaScript</li>
 	<li>Add Slashes To Selection</li>
 	&nbsp;
+	<li>console.log()</li>
+	<li>Pretty print_r()</li>
+	&nbsp;
 	<li>Unindent</li>
 	<li>Block Indent</li>
 	<li>Block Unindnt</li>
