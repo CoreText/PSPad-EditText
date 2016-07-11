@@ -151,7 +151,7 @@ End Function
 
 Sub openFolder
    Set FS     = CreateObject("Scripting.FileSystemObject")
-   Set Shell = CreateObject("Shell.Application")
+   Set Shell  = CreateObject("Shell.Application")
    Set File   = FS.GetFile(GetFileName())
    folderName = File.ParentFolder
    Shell.Explore folderName
@@ -287,6 +287,7 @@ Sub ShiftTab
     Set obj = newEditor()
     obj.assignActiveEditor()
 
+' TPSSynEdit
     If obj.selText() = "" Then
         obj.command("ecPageRight")
         obj.command("ecSelLineStart")
@@ -406,7 +407,6 @@ Sub ListSelectedItemsToArr
     s = ""
     selTxt = obj.selText()
     arrLines = Split(selTxt, vbCrLf)
-'     MsgBox TypeName(arrLines)
     If selTxt <> "" Then
         For Each item In arrLines
             If Trim(Item) <> "" Then
@@ -551,7 +551,6 @@ Sub AddSlashesToSelection()
     obj.assignActiveEditor()
 
     If obj.selText() <> "" Then
-        MsgBox "Yeah"
 
         s = AddSlashes(obj.selText())
         obj.selText(s)
@@ -626,7 +625,6 @@ Sub SelectedHTMLBlockToStringForJavaScript()
 End Sub
 
 
-
 ' Copy current full path
 Sub CopyPath
     Set activeEditor = newEditor()
@@ -642,7 +640,6 @@ Sub OpenFileBlank
     Set wshShell = Nothing
     Set activeEditor = Nothing
 End Sub
-
 
 
 Function AddSingleQuotesTo(ByVal strInput)
@@ -1107,3 +1104,7 @@ Sub FocusMove
         runPSPadAction "aSwitchLog"
     End with
 End Sub
+
+
+
+
