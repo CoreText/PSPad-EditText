@@ -98,6 +98,8 @@ Sub CreateFolder
     obj.assignActiveEditor()
     currentDir = ExtractFilePath( obj.fileName() )
 
+    setClipboardText(currentDir)
+
     Set SA = CreateObject("Shell.Application")
     Set oFolder = SA.BrowseForFolder(0, "Current Directory:", BIF_EDITBOX Or BIF_NEWDIALOGSTYLE Or BIF_STATUSTEXT Or BIF_VALIDATE, currentDir )
 
