@@ -5,6 +5,7 @@ const module_title  = "&Edit"
 'Here you can adjust your keys, but first remap your original keymap
 Sub Init
     addMenuItem "Smart Paste" , module_title , "SmartPaste"  , "Ctrl+V"
+'     addMenuItem "Duplicate"   , module_title , "HorizontalDuplicate"  , "Ctrl+Alt+D"
 
     addMenuItem "Selection to &Right" , module_title , "SelectToRight"  , "Ctrl+Alt+Right"
     addMenuItem "Selection to &Left"  , module_title , "SelectToLeft"   , "Ctrl+Alt+Left"
@@ -41,7 +42,7 @@ Sub Init
 
     addMenuItem "Selected HTML Block To String For JavaScript"  , module_title , "SelectedHTMLBlockToStringForJavaScript" , "Shift+Ctrl+Alt+'"
     addMenuItem "Add Slashes To Selection"                      , module_title , "AddSlashesToSelection"                  , "Ctrl+Alt+'"
-    addMenuItem "console.log()"                                 , module_title , "consoleLog"                             , "Shift+Ctrl+Alt+J"
+    addMenuItem "console.log()"                                 , module_title , "consoleLog"                             , "Alt+J"
     addMenuItem "Pretty print_r()"                              , module_title , "prettyPrinter"                          , "Shift+Ctrl+I"
 
     addMenuItem "List Selected Items"   , module_title , "ListSelectedItems"   , "Ctrl+0"
@@ -50,9 +51,10 @@ Sub Init
     addMenuItem "List Selected Items"   , module_title , "ListSelectedItemsToArr"    , "Ctrl+]"
     addMenuItem "List Selected Strings" , module_title , "ListSelectedStringsToSmth" , "Shift+Ctrl+]"
 
-    addMenuItem "Open &TODO.txt"          , module_title , "OpenFileBlank" , "Shift+Ctrl+Alt+Space"
-    addMenuItem "Open Current &Folder"    , module_title , "OpenFolder"    , "Alt+O"
-    addMenuItem "&Copy Current Full Path" , module_title , "CopyPath"      , "Alt+C"
+    addMenuItem "Open &TODO.txt"                  , module_title , "OpenFileBlank"   , "Shift+Ctrl+Alt+Space"
+    addMenuItem "Open Current &Folder"            , module_title , "OpenFolder"      , "Alt+O"
+    addMenuItem "Create Floder In Current Dir"    , module_title , "CreateFolder"    , "Ctrl+Alt+N"
+    addMenuItem "&Copy Current Full Path"         , module_title , "CopyPath"        , "Alt+C"
 
     addMenuItem "Focus Move" , module_title, "FocusMove" , "Alt+D"
 
@@ -62,6 +64,54 @@ Sub Init
 
     addMenuItem "Goto Matching Tag"         , module_title, "GotoTag" , "Ctrl+W"
 '     addMenuItem "SelectWord" , module_title, "SelectWord" , "Ctrl+W"
+End Sub
+
+'Gets ParentFolder?
+Function ExtractFilePath ( strPath )
+    If Len(strPath) = 0 Then
+      Exit Function                                    ' input string is empty
+    Else
+      strPath = Replace(strPath, Chr(47), Chr(92))     ' convert backslashes to forward slashes
+      If InStr(1, strPath, Chr(92)) = 0 Then
+        Exit Function                                  ' string contains no forward slashes
+      End If
+    End If
+    ExtractFilePath = Left(strPath, InStrRev(strPath, Chr(92)))
+End Function
+
+Sub CreateFolder
+    Const BIF_BROWSEFORCOMPUTER  = &H1000
+    Const BIF_BROWSEFORPRINTER   = &H2000
+    Const BIF_BROWSEINCLUDEFILES = &H4000
+    Const BIF_BROWSEINCLUDEURLS  = &H80
+    Const BIF_DONTGOBELOWDOMAIN  = &H2
+    Const BIF_EDITBOX            = &H10
+    Const BIF_NEWDIALOGSTYLE     = &H40
+    Const BIF_RETURNFSANCESTORS  = &H8
+    Const BIF_RETURNONLYFSDIRS   = &H1
+    Const BIF_SHAREABLE          = &H8000
+    Const BIF_STATUSTEXT         = &H4
+    Const BIF_USENEWUI           = &H40
+    Const BIF_VALIDATE           = &H20
+
+    Set obj = newEditor()
+    obj.assignActiveEditor()
+    currentDir = ExtractFilePath( obj.fileName() )
+
+    Set SA = CreateObject("Shell.Application")
+    Set oFolder = SA.BrowseForFolder(0, "Current Directory:", BIF_EDITBOX Or BIF_NEWDIALOGSTYLE Or BIF_STATUSTEXT Or BIF_VALIDATE, currentDir )
+
+    While (Not oFolder Is Nothing) 
+        Set SA = CreateObject("Shell.Application")
+        Set oFolder = SA.BrowseForFolder(0, "Current Directory:", BIF_EDITBOX Or BIF_NEWDIALOGSTYLE Or BIF_STATUSTEXT Or BIF_VALIDATE, oFolder )
+    Wend
+
+    runPSPadAction("aProjSynchroDrive")
+
+    Set obj = Nothing
+    Set SA  = Nothing
+    Set oFolder = Nothing
+    Set currentDir = Nothing
 End Sub
 
 
@@ -185,12 +235,36 @@ Sub SmartPaste
     If obj.caretX() = 1 Then
         obj.command("ecPaste")
     Else
-        clipboard = Trim(getClipboardText())
+        clipboard = LTrim(getClipboardText())
         obj.selText(clipboard)
     End If
 
     Set obj = Nothing
 End Sub
+
+' Sub HorizontalDuplicate
+'     Dim sel, clipboard
+'     Set obj = newEditor()
+'     obj.assignActiveEditor()
+'     sel = obj.selText()
+'
+'     If sel <> "" Then
+'         x = obj.caretX()
+'         xb = obj.blockBeginX()
+'         xe = obj.blockEndX()
+'         yb = obj.blockBeginY()
+'         ye = obj.blockEndY()
+'         MsgBox xe
+'         setBlockEnd(xe, ye)
+'         setBlockBegin(xb, yb)
+'         obj.command("ecCopy")
+'         obj.command("ecRight")
+'         runPSPadAction("aPasteNoMove")
+'
+'     End If
+'
+'     Set obj = Nothing
+' End Sub
 
 
 Function GetTagAtCursor()
@@ -1104,7 +1178,4 @@ Sub FocusMove
         runPSPadAction "aSwitchLog"
     End with
 End Sub
-
-
-
 
