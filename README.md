@@ -51,10 +51,10 @@ Some text editing enhancements and a bit more.
 </ul>
 
 ### Installation
-Put the _EditText.vbs_ file into _PSPad/Script/VBScript/_ direcotry.<br />
-Before use, check out your _KeyMap.INI_ or _KeyMap.KM_, because some of keybindings will overlap yours.<br />
+Put the `EditText.vbs` file into `PSPad/Script/VBScript/` direcotry.<br />
+Before use, check out your `KeyMap.INI` or `KeyMap.KM`, because some of keybindings will overlap yours.<br />
 If you don't want to mess with keybindigs you can take [mine](https://github.com/CoreText/PSPad-Settings).<br />
-If you don't like some of the features just comment them in _EditText.vbs_ with a single quote in the begining of the string.<br />
+If you don't like some of the features just comment them in `EditText.vbs` with a single quote in the begining of the string.<br />
 
 <hr />
 ###Some related repos
