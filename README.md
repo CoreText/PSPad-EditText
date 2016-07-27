@@ -2,8 +2,7 @@
 Some text editing enhancements and a bit more.
 
 ### Some features
-
-    ![](https://raw.githubusercontent.com/CoreText/PSPad-EditText/master/PSPad_EditText_Example.png) <br />
+![](https://raw.githubusercontent.com/CoreText/PSPad-EditText/master/PSPad_EditText_Example.png) <br />
 
 <ul>
 	<li>Selection to the Ending of line</li>
