@@ -30,7 +30,7 @@ Some text editing enhancements and a bit more.
 	<li>Add %% Procents To Selection</li>
 	&nbsp;
 	<li>List Selected Items In () or [] or {}</li>
-	<li>List Selected Iterms in Strings in () or [] or {}</li>
+	<li>List Selected Iterms to Strings in () or [] or {}</li>
 	&nbsp;
 	<li>Goto Matching Tag</li>
 	<li>Selected HTML Block To String For JavaScript</li>
