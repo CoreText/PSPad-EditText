@@ -2,7 +2,9 @@
 Some text editing enhancements and a bit more.
 
 ### Some features
-
+<div>
+    ![Example](https://github.com/CoreText/PSPad-EditText/blob/master/PSPad_EditText_Example.png)
+</div>
 <ul>
 	<li>Selection to the Ending of line</li>
 	<li>Selection to the Begining of line</li>
@@ -28,8 +30,8 @@ Some text editing enhancements and a bit more.
 	<li>Add `` Apostrophes To Selection</li>
 	<li>Add %% Procents To Selection</li>
 	&nbsp;
-	<li>List Selected Items</li>
-	<li>List Selected Strings</li>
+	<li>List Selected Items In () or [] or {}</li>
+	<li>List Selected Iterms in Strings in () or [] or {}</li>
 	&nbsp;
 	<li>Goto Matching Tag</li>
 	<li>Selected HTML Block To String For JavaScript</li>
