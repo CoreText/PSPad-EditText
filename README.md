@@ -3,7 +3,7 @@ Some text editing enhancements and a bit more.
 
 ### Some features
 <div>
-    ![Example](https://github.com/CoreText/PSPad-EditText/blob/master/PSPad_EditText_Example.png)
+    ![](https://github.com/CoreText/PSPad-EditText/blob/master/PSPad_EditText_Example.png "Example")
 </div>
 <ul>
 	<li>Selection to the Ending of line</li>
